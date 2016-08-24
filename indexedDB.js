@@ -33,7 +33,7 @@
             var database = (typeof opt == 'string') ? opt : opt.dbName;
             var tableName = (typeof opt == 'string') ? opt : opt.tableName;
             var version = null;
-            var _this = this;
+            var _thisDB = this;
             var _callback = {
                 'name': opt.tableName||database,
                 'db': undefined,
@@ -136,6 +136,10 @@
             this.deleteDB = function() {
                 indexedDB.deleteDatabase(database);
             };
+            console.log("挂载外部集合方法");
+            if(typeof window.indexedDB_collection === "function")this.collection = window.indexedDB_collection.call(_thisDB);
+            console.log(window.indexedDB_collection)
+            console.log("挂载完成");
             this.open = function(callback) {
                 var request;
                 if (!indexedDB) {
@@ -159,7 +163,7 @@
                         console.log('找不到子表,开始创建子表'+_callback.name+'...'+'版本:'+(++version));
                         console.log('数据库关闭!')
                         this.result.close();
-                        _this.open(callback);
+                        _thisDB.open(callback);
 
                         return;
             　　    }
@@ -176,7 +180,7 @@
                      }
                     ********/
                     console.log("数据库升级中....开始建表");
-                    keyPath = {
+                    var keyPath = {
                         autoIncrement: true
                     };
                     if (columns != undefined && columns.key != undefined) {
@@ -186,7 +190,7 @@
                     }
                     var store = event.currentTarget.result.createObjectStore(_callback.name, keyPath);
                     if (columns != undefined && columns.index != undefined) {
-                        index = columns.index;
+                        var index = columns.index;
                         for (var i = 0; i < index.length; i++) {
                             j = index[i];
                             for (var field in j) {
@@ -196,11 +200,16 @@
                         }
                     }
                 };
+                return _thisDB;
             };
         })(opt, columns);
     }
     if (typeof $ === 'function') {
         $.db = db;
+    }else if(typeof define=="function"){
+        define(function(){return db});
+    }else{
+        window.db = db;
     }
-    "function"==typeof define&&define(function(){return db});
+    
 }()

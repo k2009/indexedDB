@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+	<script src="./indexedDB.js"></script>
+	<script src="./indexedDB.collection.js"></script>
+	<script>
+
+		+function(){
+
+			let testDB = db({
+			    dbName: "testDB"
+			}, {
+			    key: 'userID',
+			    index: []
+			});
+
+
+			testDB.collection.find();
+
+
+		}()
+	</script>
+</head>
+<body>
+	
+</body>
+</html>
