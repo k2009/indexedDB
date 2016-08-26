@@ -39,7 +39,7 @@
 			}
 		}
 		var key_fn ={
-			$and:function(){		//与方法,内部表达式都符合才返回 => db.collection.find({"$and":[{"userid":"495"},{"type":"info"}]})
+			$and:function(data){		//与方法,内部表达式都符合才返回 => db.collection.find({"$and":[{"userid":"495"},{"type":"info"}]})
 
 			},
 			$or:function(){			//或方法,满足其一及返回
@@ -61,9 +61,15 @@
 		var fn_json = {
 			find:function(opt){
 				var data = {};
+				var callback = function(){};
+				var callbackJson = {
+					done:function(c){
+						callback = c;
+					}
+				};
 
 				_thisDB.open(function(e){
-					searchKey = {
+					var searchKey = {
 
 					}
 					data = {};
@@ -73,14 +79,29 @@
 							key_fn[attr](data);
 
 						}else{
-							searchkey[attr] = opt[attr]
+							searchKey[attr] = opt[attr]
+							e.each(function(d){
+								var btn = true;
+								for (var attr in searchKey) {
+									if(d[attr] != searchKey[attr]){
+										btn = false;
+									}
+								}
+								if(btn){
+									data = d;
+									callback(data)
+									return false;
+								}
+
+							})
 						}
 					}
 
-					return data;
+
 
 				})
 
+				return callbackJson;
 			}
 		}
 		return fn_json;

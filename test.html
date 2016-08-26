@@ -17,9 +17,26 @@
 			    key: 'userID',
 			    index: []
 			});
+			testDB.open(function(e){
+				//数据库里无数据时测试用
+				// var data = [];
+				// var names = ['月饼','桃子','黄鹂','琪琪','卡尼尔','背包','老鹰','Jimmy','黄焖Jimmy饭','不知道该起啥名了']
+				// for (var i = 10000 - 1; i >= 0; i--) {
+				// 	var json = {
+				// 		userID : i,
+				// 		name: names[i%10]
+				// 	}
+				// 	e.put(json);
+				// }
+			})
+			testDB.collection
+			.find({"name":{$all:"桃子"}})
+			.done(function(data){
+				console.log('获取成功')
+				console.log(data)
+				console.log('打印完毕')
+			})
 
-			testDB.collection.find();
-			
 
 		}()
 	</script>

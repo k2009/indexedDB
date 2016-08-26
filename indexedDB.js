@@ -92,7 +92,8 @@
                             }
                             return;
                         };
-                        callback(cursor.value);
+                        var type = callback(cursor.value);
+                        if(type === false)return;
                         cursor.continue();
                     };
                 },
