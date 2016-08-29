@@ -61,6 +61,7 @@
 		var fn_json = {
 			find:function(opt){
 				var data = {};
+				var attr;
 				var callback = function(){};
 				var callbackJson = {
 					done:function(c){
@@ -74,12 +75,14 @@
 					}
 					data = {};
 
-					for(var attr in opt){
-						if(key_fn[attr]){
-							key_fn[attr](data);
-
+					for(attr in opt){
+						if(key_fn[attr]){=
+							for (var d in opt[attr]) {
+								searchKey[d]
+							}
 						}else{
-							searchKey[attr] = opt[attr]
+							searchKey[attr] = opt[attr];
+
 							e.each(function(d){
 								var btn = true;
 								for (var attr in searchKey) {
@@ -92,13 +95,9 @@
 									callback(data)
 									return false;
 								}
-
 							})
 						}
 					}
-
-
-
 				})
 
 				return callbackJson;
